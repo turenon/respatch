@@ -12,7 +12,7 @@ import locale
 import subprocess
 
 
-MODULE    = 'GameClientResource'
+MODULE = 'GameClientResource'
 currdir = os.path.dirname(os.path.realpath(__file__))
 rsync_exe = os.path.join(currdir,r'bin\rsync.exe')
 cgypath_exe = os.path.join(currdir,r'bin\cygpath.exe')
@@ -98,10 +98,10 @@ class puFrame1 ( wx.Frame ):
 
 
     def getinspoint(self):
-    	return self.m_output.GetInsertionPoint()
+        return self.m_output.GetInsertionPoint()
 
     def progressbarlog(self,point,message):
-    	self.m_output.Replace(point,point + 100,message)
+        self.m_output.Replace(point,point + 100,message)
 
     def _uploadsource( self, event ):
         resource_file = self.m_textCtrl1.GetValue()
@@ -143,6 +143,13 @@ def remove_BOM(config_path):
     content = re.sub(r"\xef\xbb\xbf","", content)
     open(config_path, 'w').write(content)
 
+
+class mainApp(wx.App):
+    def OnInit(self):
+        self.Frame=puFrame1()
+        self.Frame.Show()
+        return True
+
 if __name__=='__main__':
     format_datetime = "%Y%m%d%H%M%S"
     logfile = time.strftime(format_datetime, time.localtime(time.time()))
@@ -155,8 +162,5 @@ if __name__=='__main__':
     for _section in _sections:
         if _section != "global":
             _sections_new.append(_section)
-    #ftp=MyFTP()
-    app=wx.App()
-    f1=puFrame1()
-    f1.Show()
+    app = mainApp(redirect=True, filename="debug.txt")
     app.MainLoop()
